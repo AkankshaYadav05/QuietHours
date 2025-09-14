@@ -9,7 +9,11 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Alert, AlertDescription } from './ui/alert';
 import { Plus, Clock } from 'lucide-react';
 
-export function QuietBlockForm({ onSuccess }) {
+interface QuietBlockFormProps {
+  onSuccess: () => void;
+}
+
+export function QuietBlockForm({ onSuccess }: QuietBlockFormProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [startTime, setStartTime] = useState('');
@@ -17,7 +21,7 @@ export function QuietBlockForm({ onSuccess }) {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);

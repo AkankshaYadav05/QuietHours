@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { useAuth } from '../contexts/AuthContext.jsx';
+import { useAuth } from '../contexts/AuthContext';
 import { Button } from './ui/button';
-import { QuietBlockForm } from './QuietBlockForm.jsx';
-import { QuietBlocksList } from './QuietBlocksList.jsx';
+import { QuietBlockForm } from './QuietBlockForm';
+import { QuietBlocksList } from './QuietBlocksList';
 import { LogOut, User, Settings } from 'lucide-react';
 
 export function Dashboard() {
@@ -138,27 +138,42 @@ export function Dashboard() {
             </div>
           </div>
 
-          {/* CRON Setup Instructions */}
+          {/* Gmail Setup Instructions */}
           <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
             <h3 className="text-lg font-semibold text-blue-800 mb-4">
-              📧 Email Notifications Setup
+              📧 Gmail SMTP Setup Instructions
             </h3>
-            <div className="text-sm text-blue-700 space-y-2">
-              <p>
-                <strong>For Production:</strong> Set up a CRON job to call the email notification endpoint every minute:
-              </p>
-              <code className="block bg-blue-100 p-2 rounded text-xs font-mono">
-                * * * * * curl -X GET "https://your-domain.com/api/cron/email-notifications" -H "Authorization: Bearer your-cron-secret"
-              </code>
-              <p className="mt-3">
-                <strong>Environment Variables Required:</strong>
-              </p>
-              <ul className="list-disc list-inside space-y-1 ml-4">
-                <li><code>CRON_SECRET</code> - Secret key for CRON authentication</li>
-                <li><code>MONGODB_URI</code> - MongoDB connection string</li>
-                <li><code>JWT_SECRET</code> - JWT signing secret</li>
-                <li>Email service credentials (SendGrid, AWS SES, etc.)</li>
-              </ul>
+            <div className="text-sm text-blue-700 space-y-3">
+              <div>
+                <p className="font-semibold mb-2">Step 1: Enable 2-Factor Authentication</p>
+                <p>Go to your Google Account settings and enable 2-factor authentication if not already enabled.</p>
+              </div>
+              
+              <div>
+                <p className="font-semibold mb-2">Step 2: Generate App Password</p>
+                <p>1. Go to Google Account → Security → 2-Step Verification → App passwords</p>
+                <p>2. Select "Mail" and generate a password</p>
+                <p>3. Copy the 16-character password (remove spaces)</p>
+              </div>
+              
+              <div>
+                <p className="font-semibold mb-2">Step 3: Environment Variables</p>
+                <p>Add these to your <code>.env.local</code> file:</p>
+                <div className="bg-blue-100 p-3 rounded mt-2 font-mono text-xs">
+                  <p>GMAIL_USER=your-email@gmail.com</p>
+                  <p>GMAIL_APP_PASSWORD=your-16-char-app-password</p>
+                  <p>CRON_SECRET=your-cron-secret</p>
+                  <p>MONGODB_URI=your-mongodb-connection-string</p>
+                  <p>JWT_SECRET=your-jwt-secret</p>
+                </div>
+              </div>
+              
+              <div>
+                <p className="font-semibold mb-2">Step 4: CRON Job for Production</p>
+                <code className="block bg-blue-100 p-2 rounded text-xs font-mono">
+                  * * * * * curl -X GET "https://your-domain.com/api/cron/email-notifications" -H "Authorization: Bearer your-cron-secret"
+                </code>
+              </div>
             </div>
           </div>
         </div>
