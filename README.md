@@ -135,6 +135,3 @@ In development mode, you'll see a "Test CRON" button in the dashboard to manuall
 4. Test thoroughly
 5. Submit a pull request
 
-## License
-
-MIT License - see LICENSE file for details.
