@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useAuth } from '../contexts/AuthContext.jsx';
+import { useAuth } from '../contexts/AuthContext';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
@@ -20,7 +20,7 @@ export function LoginForm() {
 
   const { login, register } = useAuth();
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
@@ -32,7 +32,7 @@ export function LoginForm() {
     setIsLoading(false);
   };
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);

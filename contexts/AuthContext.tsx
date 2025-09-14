@@ -1,11 +1,29 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 
-const AuthContext = createContext(undefined);
+interface User {
+  userId: string;
+  email: string;
+  name: string;
+}
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+interface AuthContextType {
+  user: User | null;
+  login: (email: string, password: string) => Promise<boolean>;
+  register: (name: string, email: string, password: string) => Promise<boolean>;
+  logout: () => void;
+  isLoading: boolean;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+export function AuthProvider({ children }: AuthProviderProps) {
+  const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -33,7 +51,7 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  const login = async (email, password) => {
+  const login = async (email: string, password: string): Promise<boolean> => {
     try {
       const response = await fetch('/api/auth/login', {
         method: 'POST',
@@ -53,7 +71,7 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const register = async (name, email, password) => {
+  const register = async (name: string, email: string, password: string): Promise<boolean> => {
     try {
       const response = await fetch('/api/auth/register', {
         method: 'POST',
@@ -85,7 +103,7 @@ export function AuthProvider({ children }) {
   );
 }
 
-export function useAuth() {
+export function useAuth(): AuthContextType {
   const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider');

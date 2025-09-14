@@ -7,8 +7,21 @@ import { Badge } from './ui/badge';
 import { format } from 'date-fns';
 import { Calendar, Clock, Trash2, BookOpen } from 'lucide-react';
 
-export function QuietBlocksList({ refreshTrigger }) {
-  const [blocks, setBlocks] = useState([]);
+interface QuietBlock {
+  _id: string;
+  title: string;
+  description?: string;
+  startTime: string;
+  endTime: string;
+  emailSent: boolean;
+}
+
+interface QuietBlocksListProps {
+  refreshTrigger: number;
+}
+
+export function QuietBlocksList({ refreshTrigger }: QuietBlocksListProps) {
+  const [blocks, setBlocks] = useState<QuietBlock[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchBlocks = async () => {
@@ -30,7 +43,7 @@ export function QuietBlocksList({ refreshTrigger }) {
     setIsLoading(false);
   };
 
-  const deleteBlock = async (blockId) => {
+  const deleteBlock = async (blockId: string) => {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(`/api/quiet-blocks/${blockId}`, {
@@ -52,7 +65,7 @@ export function QuietBlocksList({ refreshTrigger }) {
     fetchBlocks();
   }, [refreshTrigger]);
 
-  const getBlockStatus = (startTime, endTime) => {
+  const getBlockStatus = (startTime: string, endTime: string) => {
     const now = new Date();
     const start = new Date(startTime);
     const end = new Date(endTime);
